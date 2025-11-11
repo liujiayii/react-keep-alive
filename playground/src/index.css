@@ -1,0 +1,42 @@
+/* 简单的全局样式，确保页面元素有基本可读性 */
+:root {
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial,
+    "Apple Color Emoji",
+    "Segoe UI Emoji";
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: #f8f8fb;
+}
+
+a {
+  color: #1677ff;
+  text-decoration: none;
+}
+
+code {
+  background: #efefef;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #d0d0d0;
+  background: #fff;
+  cursor: pointer;
+}
+
+input {
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+}

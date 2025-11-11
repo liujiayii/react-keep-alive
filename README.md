@@ -1,0 +1,131 @@
+# react-keep-alive
+
+一个基于 React 19.2 的 Activity 实现的 KeepAlive 组件，为 React 路由应用带来与 Vue KeepAlive 类似的 include/exclude/max 语义与行为。
+
+## 仓库结构
+
+- `src/` 库源码（react-keep-alive）
+- `playground/` 演示应用：展示缓存、生命周期、LRU 等效果
+
+## 安装
+
+要求 React 版本为 19.2 及以上（以支持 Activity）。
+
+```bash
+pnpm add react-keep-alive
+```
+
+## 快速上手
+
+用 `KeepAlive` 包裹你的路由出口，并传入当前路径作为 `activeKey`。
+
+```tsx
+import { KeepAlive } from "react-keep-alive";
+import { createBrowserRouter, Outlet, RouterProvider, useLocation } from "react-router-dom";
+
+function Layout() {
+  const { pathname } = useLocation();
+  return (
+    <KeepAlive activeKey={pathname} include={[/^\/investment/]} max={3}>
+      <Outlet />
+    </KeepAlive>
+  );
+}
+
+const router = createBrowserRouter([
+  { path: "/", element: <Layout />, children: [
+    { path: "", element: <Home /> },
+    { path: "investment/a", element: <InvestmentA /> },
+    { path: "investment/b", element: <InvestmentB /> },
+    { path: "nocache", element: <NoCache /> },
+  ] }
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
+}
+```
+
+## API
+
+### `<KeepAlive />`
+
+参数说明：
+
+- `activeKey: string` 当前激活项的唯一键，推荐使用 `location.pathname`
+- `include?: (string | RegExp | (key: string) => boolean)[]` 允许被缓存的集合；设置后仅命中者缓存
+- `exclude?: (string | RegExp | (key: string) => boolean)[]` 禁止被缓存的集合；命中者不缓存
+- `max?: number` LRU 最大容量；超出后淘汰最久未使用项
+- `children: ReactNode` 要被缓存/切换显示的内容
+
+Tips：
+
+- 当 `include` 为空时，默认允许所有页面进入缓存；设置了 `exclude` 后会优先生效
+- `max` 为 `Infinity` 时不做容量限制；设为较小数值可观察 LRU 淘汰行为
+
+### `useAliveLifecycle`
+
+提供 `onActivated/onDeactivated` 生命周期回调（仅在被 KeepAlive 包裹的组件中触发）。
+
+```tsx
+import { useAliveLifecycle } from "react-keep-alive";
+
+export default function Page() {
+  useAliveLifecycle({
+    onActivated: () => console.log("activated"),
+    onDeactivated: () => console.log("deactivated"),
+  });
+  return <div>content</div>;
+}
+```
+
+## Playground（演示）
+
+已经内置演示工程：
+
+- 顶部控制条：切换缓存模式（仅 /investment / 全部 / 禁用）与 LRU 容量
+- 页面示例：`/investment/a/b/c/d`（计数器+输入框维持）、`/investment/long`（滚动位置维持）、`/nocache`（对照）
+
+启动：
+
+```bash
+pnpm -C playground dev
+```
+
+构建：
+
+```bash
+pnpm -C playground build
+```
+
+## 开发&规范
+
+本仓库在根目录配置了 `husky` + `lint-staged`：
+
+- `pre-commit`：对变更的 `*.{ts,tsx,js,jsx}` 执行 `eslint --fix`
+- `pre-push`：递归构建所有 workspace 包，提前发现类型/构建错误
+
+启用 Git hooks：
+
+```bash
+git init
+pnpm install
+pnpm run prepare
+```
+
+常用脚本：
+
+- `pnpm -C playground dev` 启动演示
+- `pnpm -C playground build` 构建演示
+- `pnpm build` 构建库（仅 TypeScript 编译）
+- `pnpm lint` 在根目录执行 ESLint
+
+## 说明
+
+- 依赖 React 19.2+ 的 `Activity`，旧版本 React 不支持。
+- 路由懒加载时，`KeepAlive` 仍能保持已加载页面的状态；首次进入页面后会进入缓存池。
+- SSR 尚未验证，欢迎 PR。
+
+## License
+
+MIT

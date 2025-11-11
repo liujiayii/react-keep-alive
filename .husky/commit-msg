@@ -1,0 +1,4 @@
+
+
+# 使用 commitlint 校验提交信息
+pnpm exec commitlint --edit "$1"
