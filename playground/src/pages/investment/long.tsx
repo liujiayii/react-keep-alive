@@ -1,9 +1,10 @@
 //
+import type { ReactElement } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAliveLifecycle } from "react-keep-alive";
 import { Link } from "react-router-dom";
 
-export default function InvestmentLong(): JSX.Element {
+export default function InvestmentLong(): ReactElement {
   const [activatedTimes, setActivatedTimes] = useState(0);
   const [deactivatedTimes, setDeactivatedTimes] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);

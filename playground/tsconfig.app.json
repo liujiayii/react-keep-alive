@@ -10,7 +10,7 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "types": ["vite/client"],
+    "types": ["react", "react-dom", "vite/client"],
     "allowImportingTsExtensions": true,
 
     /* Linting */

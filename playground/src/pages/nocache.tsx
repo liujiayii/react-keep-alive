@@ -1,7 +1,8 @@
+import type { ReactElement } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function NoCachePage(): JSX.Element {
+export default function NoCachePage(): ReactElement {
   const [count, setCount] = useState(0);
   const [text, setText] = useState("");
   return (

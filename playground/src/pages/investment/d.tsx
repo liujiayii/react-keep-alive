@@ -1,9 +1,10 @@
 //
+import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 import { useAliveLifecycle } from "react-keep-alive";
 import { Link } from "react-router-dom";
 
-export default function InvestmentD(): JSX.Element {
+export default function InvestmentD(): ReactElement {
   const [count, setCount] = useState(0);
   const [text, setText] = useState("");
   const [activatedTimes, setActivatedTimes] = useState(0);

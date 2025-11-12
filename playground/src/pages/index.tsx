@@ -1,6 +1,7 @@
+import type { ReactElement } from "react";
 import { Link } from "react-router-dom";
 
-export default function Home(): JSX.Element {
+export default function Home(): ReactElement {
   return (
     <div style={{ padding: 24 }}>
       <h1>React KeepAlive 演示首页</h1>

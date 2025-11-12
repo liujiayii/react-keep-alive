@@ -1,9 +1,10 @@
+import type { ReactElement } from "react";
 import { useMemo, useState } from "react";
 import { KeepAlive } from "react-keep-alive";
 import { createBrowserRouter, Link, RouterProvider, useLocation, useOutlet } from "react-router-dom";
 import routes from "./routes";
 
-function Layouts(): JSX.Element {
+function Layouts(): ReactElement {
   const location = useLocation();
   const outlet = useOutlet();
 
@@ -92,7 +93,7 @@ const router = createBrowserRouter([
   { path: "/", element: <Layouts />, children: routes },
 ]);
 
-function App(): JSX.Element {
+function App(): ReactElement {
   return (
     <>
       {/* RouterProvider 不再设置 fallbackElement，避免与当前版本类型不匹配导致构建错误 */}
