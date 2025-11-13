@@ -1,5 +1,5 @@
 import { use, useEffect, useRef } from "react";
-import { AliveItemContext } from "./context";
+import { AliveController, AliveItemContext } from "./context";
 
 /** 当组件被激活（显示）时触发 */
 export function useActivated(effect?: () => void): void {
@@ -37,4 +37,22 @@ export function useAliveLifecycle(opts: { onActivated?: () => void; onDeactivate
   // Hooks 必须无条件调用：传入可选 effect，在内部判断是否执行
   useActivated(onActivated);
   useDeactivated(onDeactivated);
+}
+
+export function useAliveController(): {
+  drop: (name: string | RegExp) => void;
+  dropScope: (name: string | RegExp) => void;
+  refresh: (name: string | RegExp) => void;
+  refreshScope: (name: string | RegExp) => void;
+  clear: () => void;
+  getCachingNodes: () => string[];
+} {
+  return {
+    drop: (name) => AliveController.drop(name),
+    dropScope: (name) => AliveController.dropScope(name),
+    refresh: (name) => AliveController.refresh(name),
+    refreshScope: (name) => AliveController.refreshScope(name),
+    clear: () => AliveController.clear(),
+    getCachingNodes: () => AliveController.getCachingNodes(),
+  };
 }

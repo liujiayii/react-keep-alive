@@ -79,6 +79,36 @@ export default function Page() {
 }
 ```
 
+### `useAliveController`
+
+提供对缓存节点的主动控制能力，返回：`drop`、`dropScope`、`refresh`、`refreshScope`、`clear`、`getCachingNodes`。
+
+- `drop(name)`：按 `name` 卸载命中的第一层缓存节点（`string | RegExp`）。
+- `dropScope(name)`：按 `name` 卸载命中节点及其作用域内所有嵌套的 `<KeepAlive>`。
+- `refresh(name)`：按 `name` 刷新命中的第一层缓存节点（重新挂载实例）。
+- `refreshScope(name)`：按 `name` 刷新命中节点及其作用域内所有嵌套的 `<KeepAlive>`。
+- `clear()`：清空所有缓存中的 `<KeepAlive>`。
+- `getCachingNodes()`：获取当前所有缓存节点的名称列表。
+
+```tsx
+import { useAliveController } from "react-keep-alive";
+
+export default function Panel() {
+  const { drop, dropScope, refresh, refreshScope, clear, getCachingNodes } = useAliveController();
+  const target = "/investment/a";
+  return (
+    <div>
+      <button type="button" onClick={() => drop(target)}>drop</button>
+      <button type="button" onClick={() => dropScope(/^\/investment/)}>dropScope</button>
+      <button type="button" onClick={() => refresh(target)}>refresh</button>
+      <button type="button" onClick={() => refreshScope(/^\/investment/)}>refreshScope</button>
+      <button type="button" onClick={() => clear()}>clear</button>
+      <pre>{JSON.stringify(getCachingNodes(), null, 2)}</pre>
+    </div>
+  );
+}
+```
+
 ## Playground（演示）
 
 已经内置演示工程：

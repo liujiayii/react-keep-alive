@@ -1,4 +1,5 @@
 import type { RouteObject } from "react-router-dom";
+import ComponentsCacheDemo from "./pages/components";
 import Home from "./pages/index";
 import InvestmentA from "./pages/investment/a";
 import InvestmentB from "./pages/investment/b";
@@ -20,6 +21,7 @@ const routes: RouteObject[] = [
     ],
   },
   { path: "nocache", element: <NoCachePage /> },
+  { path: "components", element: <ComponentsCacheDemo /> },
 ];
 
 export default routes;

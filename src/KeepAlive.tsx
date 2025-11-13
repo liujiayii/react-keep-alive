@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import type { ReactElement, ReactNode } from "react";
-import { Activity, useLayoutEffect, useMemo, useRef } from "react";
+import { Activity, use, useLayoutEffect, useMemo, useRef, useState } from "react";
 
-import { AliveItemProvider } from "./context";
+import { AliveItemProvider, AliveScopeContext, AliveScopeProvider, registerKeepAliveInstance, unregisterKeepAliveInstance } from "./context";
 
 const ActivityAny = Activity as any;
 
@@ -48,6 +48,10 @@ export default function KeepAlive(props: KeepAliveProps): ReactElement {
   const cacheRef = useRef<Map<string, ReactNode>>(new Map());
   // LRU 队列（最旧在前，最新在后）
   const orderRef = useRef<string[]>([]);
+  const scopesRef = useRef<Map<string, string[]>>(new Map());
+  const [, setRev] = useState(0);
+  const parentScope = use(AliveScopeContext);
+  useRegisterInstance(cacheRef, orderRef, scopesRef, setRev);
 
   const shouldExclude = useMemo(() => matchRules(activeKey, exclude), [activeKey, exclude]);
   const shouldInclude = useMemo(() => matchRules(activeKey, include), [activeKey, include]);
@@ -70,6 +74,7 @@ export default function KeepAlive(props: KeepAliveProps): ReactElement {
     }
     const cache = cacheRef.current;
     const order = orderRef.current;
+    const scopes = scopesRef.current;
 
     const __DEV__ = typeof import.meta !== "undefined" && (import.meta as any).env?.DEV;
     if (__DEV__) {
@@ -80,6 +85,7 @@ export default function KeepAlive(props: KeepAliveProps): ReactElement {
     if (!existed) {
       cache.set(activeKey, children);
       order.push(activeKey);
+      scopes.set(activeKey, [...parentScope, activeKey]);
     } else {
       // 更新当前活跃项的最新节点（保证下一次切回时是最新 UI）
       cache.set(activeKey, children);
@@ -89,6 +95,7 @@ export default function KeepAlive(props: KeepAliveProps): ReactElement {
         order.splice(idx, 1);
       }
       order.push(activeKey);
+      scopes.set(activeKey, [...parentScope, activeKey]);
     }
 
     // LRU 淘汰：超出最大容量时，移除队首（但不移除当前活跃项）
@@ -98,6 +105,7 @@ export default function KeepAlive(props: KeepAliveProps): ReactElement {
         break;
       order.shift();
       cache.delete(victim);
+      scopes.delete(victim);
     }
     if (__DEV__) {
       console.log("[KeepAlive] cache state", { keys: Array.from(cache.keys()), order: [...order] });
@@ -117,6 +125,7 @@ export default function KeepAlive(props: KeepAliveProps): ReactElement {
     if (allowCache && !cache.has(activeKey)) {
       cache.set(activeKey, children);
       order.push(activeKey);
+      scopesRef.current.set(activeKey, [...parentScope, activeKey]);
       if (__DEV__) {
         console.log("[KeepAlive] prefill cache", { activeKey, allowCache, keys: Array.from(cache.keys()) });
       }
@@ -137,11 +146,12 @@ export default function KeepAlive(props: KeepAliveProps): ReactElement {
       const node = element;
       list.push(
         <ActivityAny key={key} active={isActive}>
-          {/* 非激活项也保持挂载，但通过样式隐藏，避免出现在其他页面上 */}
           <div style={{ display: isActive ? undefined : "none" }}>
-            <AliveItemProvider active={isActive}>
-              {node}
-            </AliveItemProvider>
+            <AliveScopeProvider name={key}>
+              <AliveItemProvider active={isActive}>
+                {node}
+              </AliveItemProvider>
+            </AliveScopeProvider>
           </div>
         </ActivityAny>,
       );
@@ -151,9 +161,11 @@ export default function KeepAlive(props: KeepAliveProps): ReactElement {
     if (!allowCache || entries.length === 0) {
       list.push(
         <ActivityAny key={activeKey} active>
-          <AliveItemProvider active>
-            {children}
-          </AliveItemProvider>
+          <AliveScopeProvider name={activeKey}>
+            <AliveItemProvider active>
+              {children}
+            </AliveItemProvider>
+          </AliveScopeProvider>
         </ActivityAny>,
       );
     }
@@ -162,4 +174,64 @@ export default function KeepAlive(props: KeepAliveProps): ReactElement {
   }, [allowCache, activeKey, children]);
 
   return <>{renderList}</>;
+}
+
+function makeInstance(
+  cacheRef: React.MutableRefObject<Map<string, ReactNode>>,
+  orderRef: React.MutableRefObject<string[]>,
+  scopesRef: React.MutableRefObject<Map<string, string[]>>,
+  bump: () => void,
+): import("./context").KeepAliveInstance {
+  return {
+    getKeys: () => Array.from(cacheRef.current.keys()),
+    getScopes: () => scopesRef.current,
+    dropByName: (name) => {
+      const cache = cacheRef.current;
+      const order = orderRef.current;
+      const scopes = scopesRef.current;
+      const keys = Array.from(cache.keys());
+      for (const k of keys) {
+        const hit = typeof name === "string" ? k === name : name.test(k);
+        if (hit) {
+          cache.delete(k);
+          scopes.delete(k);
+          const idx = order.indexOf(k);
+          if (idx !== -1)
+            order.splice(idx, 1);
+        }
+      }
+      bump();
+    },
+    refreshByName: (name) => {
+      const cache = cacheRef.current;
+      const order = orderRef.current;
+      const scopes = scopesRef.current;
+      const keys = Array.from(cache.keys());
+      for (const k of keys) {
+        const hit = typeof name === "string" ? k === name : name.test(k);
+        if (hit) {
+          cache.delete(k);
+          scopes.delete(k);
+          const idx = order.indexOf(k);
+          if (idx !== -1)
+            order.splice(idx, 1);
+        }
+      }
+      bump();
+    },
+    clearAll: () => {
+      cacheRef.current.clear();
+      orderRef.current.length = 0;
+      scopesRef.current.clear();
+      bump();
+    },
+  };
+}
+
+function useRegisterInstance(cacheRef: React.MutableRefObject<Map<string, ReactNode>>, orderRef: React.MutableRefObject<string[]>, scopesRef: React.MutableRefObject<Map<string, string[]>>, setRev: React.Dispatch<React.SetStateAction<number>>): void {
+  useLayoutEffect(() => {
+    const inst = makeInstance(cacheRef, orderRef, scopesRef, () => setRev((x) => x + 1));
+    registerKeepAliveInstance(inst);
+    return () => unregisterKeepAliveInstance(inst);
+  }, []);
 }

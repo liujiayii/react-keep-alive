@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
-import { useMemo, useState } from "react";
-import { KeepAlive } from "react-keep-alive";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { KeepAlive, useAliveController } from "react-keep-alive";
 import { createBrowserRouter, Link, RouterProvider, useLocation, useOutlet } from "react-router-dom";
 import routes from "./routes";
 
@@ -25,6 +25,40 @@ function Layouts(): ReactElement {
       return [/^\/.*/];
     return undefined;
   }, [mode]);
+
+  const { drop, dropScope, refresh, refreshScope, clear, getCachingNodes } = useAliveController();
+  const [nameInput, setNameInput] = useState<string>("/investment/a");
+  const [useRegex, setUseRegex] = useState<boolean>(false);
+  const target = useMemo(() => (useRegex ? new RegExp(nameInput) : nameInput), [useRegex, nameInput]);
+  const handledQuery = useRef<string>("");
+
+  useEffect(() => {
+    const q = location.search;
+    if (q === handledQuery.current)
+      return;
+    handledQuery.current = q;
+    const params = new URLSearchParams(q);
+    const action = params.get("action");
+    const t = params.get("target");
+    const isRegex = params.get("regex") === "1";
+    const arg = t ? (isRegex ? new RegExp(t) : t) : undefined;
+    if (!action)
+      return;
+    if (action === "clear") {
+      clear();
+      return;
+    }
+    if (!arg)
+      return;
+    if (action === "drop")
+      drop(arg as any);
+    else if (action === "dropScope")
+      dropScope(arg as any);
+    else if (action === "refresh")
+      refresh(arg as any);
+    else if (action === "refreshScope")
+      refreshScope(arg as any);
+  }, [location.search]);
 
   return (
     <div>
@@ -51,6 +85,7 @@ function Layouts(): ReactElement {
           <Link to="/investment/d">D</Link>
           <Link to="/investment/long">Long</Link>
           <Link to="/nocache">NoCache</Link>
+          <Link to="/components">Components</Link>
         </div>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
           <span>模式：</span>
@@ -80,6 +115,23 @@ function Layouts(): ReactElement {
         <div style={{ color: "#666" }}>
           activeKey:
           <code>{location.pathname}</code>
+        </div>
+        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+          <input value={nameInput} onChange={(e) => setNameInput(e.target.value)} style={{ padding: 6, width: 220 }} placeholder="name 或正则" />
+          <label>
+            <input type="checkbox" checked={useRegex} onChange={(e) => setUseRegex(e.target.checked)} />
+            {" "}
+            正则
+          </label>
+          <button type="button" onClick={() => drop(target)}>drop</button>
+          <button type="button" onClick={() => dropScope(target)}>dropScope</button>
+          <button type="button" onClick={() => refresh(target)}>refresh</button>
+          <button type="button" onClick={() => refreshScope(target)}>refreshScope</button>
+          <button type="button" onClick={() => clear()}>clear</button>
+          <span>
+            缓存：
+            {JSON.stringify(getCachingNodes())}
+          </span>
         </div>
       </div>
 

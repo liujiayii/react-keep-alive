@@ -33,6 +33,9 @@ export default function Home(): ReactElement {
         <li>
           <Link to="/nocache">/nocache - 非缓存页面</Link>
         </li>
+        <li>
+          <Link to="/components">/components - 组件缓存演示（页内 Tab 切换）</Link>
+        </li>
       </ul>
 
       <p style={{ color: "#666" }}>
