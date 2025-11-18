@@ -2,4 +2,6 @@ packages:
   - playground
 
 overrides:
+  "@types/react": ^19.2.2
+  "@types/react-dom": ^19.2.2
   vite: "npm:rolldown-vite@7.2.2"
