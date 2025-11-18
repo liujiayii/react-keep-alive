@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "pnpm -w eslint playground",
     "preview": "vite preview"
   },
@@ -19,14 +19,14 @@
   },
   "devDependencies": {
     "@types/node": "^24.10.0",
-    "@unocss/cli": "^0.62.3",
-    "@unocss/preset-icons": "^0.62.3",
-    "@unocss/preset-typography": "^0.62.3",
-    "@unocss/preset-uno": "^0.62.3",
+    "@unocss/cli": "^66.5.6",
+    "@unocss/preset-icons": "^66.5.6",
+    "@unocss/preset-typography": "^66.5.6",
+    "@unocss/preset-uno": "^66.5.6",
     "@vitejs/plugin-react": "^5.1.0",
     "concurrently": "^9.0.1",
     "typescript": "~5.9.3",
-    "unocss": "^0.62.3",
-    "vite": "^5.4.0"
+    "unocss": "^66.5.6",
+    "vite": "^7.2.2"
   }
 }
