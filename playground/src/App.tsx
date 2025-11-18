@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
+import { KeepAlive, useAliveController } from "rc-keep-alive";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { KeepAlive, useAliveController } from "react-keepalive";
 import { createBrowserRouter, Link, RouterProvider, useLocation, useOutlet } from "react-router-dom";
 import routes from "./routes";
 

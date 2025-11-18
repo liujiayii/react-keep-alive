@@ -1,7 +1,7 @@
 //
 import type { ReactElement } from "react";
+import { useAliveLifecycle } from "rc-keep-alive";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useAliveLifecycle } from "react-keepalive";
 import { Link } from "react-router-dom";
 
 export default function DemoLong(): ReactElement {

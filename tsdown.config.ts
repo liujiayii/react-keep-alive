@@ -5,5 +5,6 @@ export default defineConfig({
   dts: { build: true },
   outDir: "dist",
   format: ["esm"],
+  unbundle: true,
   // sourcemap: true,
 });
