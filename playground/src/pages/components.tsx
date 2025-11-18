@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
-import { KeepAlive, useAliveLifecycle } from "rc-keep-alive";
 import { useMemo, useState } from "react";
+import { KeepAlive, useAliveLifecycle } from "react-activity-keep-alive";
 
 function APane(): ReactElement {
   const [count, setCount] = useState(0);

@@ -1,4 +1,4 @@
-# rc-keep-alive
+# react-activity-keep-alive
 
 > 温馨提示：除此行提示之外，本项目的代码99%由 Trae 开发，如您在使用过程中遇到任何问题，欢迎提交 Issue 或 Pull Request。
 
@@ -6,7 +6,7 @@
 
 ## 仓库结构
 
-- `src/` 库源码（rc-keep-alive）
+- `src/` 库源码（react-activity-keep-alive）
 - `playground/` 演示应用：展示缓存、生命周期、LRU 等效果
 
 ## 安装
@@ -14,7 +14,7 @@
 要求 React 版本为 19.2 及以上（以支持 Activity）。
 
 ```bash
-pnpm add rc-keep-alive
+pnpm add react-activity-keep-alive
 ```
 
 ## 快速上手
@@ -22,7 +22,7 @@ pnpm add rc-keep-alive
 用 `KeepAlive` 包裹你的路由出口，并传入当前路径作为 `activeKey`。
 
 ```tsx
-import { KeepAlive } from "rc-keep-alive";
+import { KeepAlive } from "react-activity-keep-alive";
 import { createBrowserRouter, Outlet, RouterProvider, useLocation } from "react-router-dom";
 
 function Layout() {
@@ -70,7 +70,7 @@ Tips：
 提供 `onActivated/onDeactivated` 生命周期回调（仅在被 KeepAlive 包裹的组件中触发）。
 
 ```tsx
-import { useAliveLifecycle } from "rc-keep-alive";
+import { useAliveLifecycle } from "react-activity-keep-alive";
 
 export default function Page() {
   useAliveLifecycle({
@@ -93,7 +93,7 @@ export default function Page() {
 - `getCachingNodes()`：获取当前所有缓存节点的名称列表。
 
 ```tsx
-import { useAliveController } from "rc-keep-alive";
+import { useAliveController } from "react-activity-keep-alive";
 
 export default function Panel() {
   const { drop, dropScope, refresh, refreshScope, clear, getCachingNodes } = useAliveController();
