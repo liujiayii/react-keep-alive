@@ -7,28 +7,28 @@ export default function Home(): ReactElement {
       <h1>React KeepAlive 演示首页</h1>
       <p>
         这个 playground 使用 KeepAlive 包裹路由内容，并通过
-        <code style={{ margin: "0 4px" }}>include: [/^/investment/]</code>
+        <code style={{ margin: "0 4px" }}>include: [/^/demo/]</code>
         仅缓存
-        <code style={{ margin: "0 4px" }}>/investment</code>
+        <code style={{ margin: "0 4px" }}>/demo</code>
         下的页面。切换页面时你可以观察到状态是否被保留。
       </p>
 
       <h2>演示入口</h2>
       <ul style={{ lineHeight: 2 }}>
         <li>
-          <Link to="/investment/a">/investment/a - 缓存页面 A</Link>
+          <Link to="/demo/a">/demo/a - 缓存页面 A</Link>
         </li>
         <li>
-          <Link to="/investment/b">/investment/b - 缓存页面 B</Link>
+          <Link to="/demo/b">/demo/b - 缓存页面 B</Link>
         </li>
         <li>
-          <Link to="/investment/c">/investment/c - 缓存页面 C</Link>
+          <Link to="/demo/c">/demo/c - 缓存页面 C</Link>
         </li>
         <li>
-          <Link to="/investment/d">/investment/d - 缓存页面 D</Link>
+          <Link to="/demo/d">/demo/d - 缓存页面 D</Link>
         </li>
         <li>
-          <Link to="/investment/long">/investment/long - 大列表与滚动保持</Link>
+          <Link to="/demo/long">/demo/long - 大列表与滚动保持</Link>
         </li>
         <li>
           <Link to="/nocache">/nocache - 非缓存页面</Link>
@@ -43,7 +43,7 @@ export default function Home(): ReactElement {
         进入 /nocache 后离开再返回，状态会重置。
       </p>
       <p style={{ color: "#666" }}>
-        你也可以使用顶部的控制栏调整缓存策略（仅缓存 /investment / 缓存全部 / 禁用缓存）以及 LRU 的最大缓存数量 max，
+        你也可以使用顶部的控制栏调整缓存策略（仅缓存 /demo / 缓存全部 / 禁用缓存）以及 LRU 的最大缓存数量 max，
         访问 A/B/C/D 超过 max 时，将看到最早访问的页面被淘汰，再返回时状态会重置。
       </p>
     </div>

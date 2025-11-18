@@ -37,9 +37,9 @@ jobs:
       - name: Prepare site
         run: |
           rm -rf site
-          mkdir -p site/demo
-          cp -r playground/dist/* site/demo/
-          cp README.md site/index.md
+          mkdir -p site
+          cp -r playground/dist/* site/
+          cp playground/dist/index.html site/404.html
           touch site/.nojekyll
 
       - name: Upload artifact

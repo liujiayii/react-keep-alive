@@ -11,7 +11,7 @@ export default function NoCachePage(): ReactElement {
       <p>
         由于 KeepAlive 的 include 仅包含
         {" "}
-        <code>/investment</code>
+        <code>/demo</code>
         {" "}
         前缀，本页面不会被缓存。
         离开再回来时，下面的状态会重置。
@@ -33,8 +33,8 @@ export default function NoCachePage(): ReactElement {
       </div>
       <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
         <Link to="/">返回首页</Link>
-        <Link to="/investment/a">去 Investment A</Link>
-        <Link to="/investment/b">去 Investment B</Link>
+        <Link to="/demo/a">去 demo A</Link>
+        <Link to="/demo/b">去 demo B</Link>
       </div>
     </div>
   );

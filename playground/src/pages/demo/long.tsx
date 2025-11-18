@@ -1,10 +1,10 @@
 //
 import type { ReactElement } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useAliveLifecycle } from "react-keep-alive";
+import { useAliveLifecycle } from "react-keepalive";
 import { Link } from "react-router-dom";
 
-export default function InvestmentLong(): ReactElement {
+export default function DemoLong(): ReactElement {
   const [activatedTimes, setActivatedTimes] = useState(0);
   const [deactivatedTimes, setDeactivatedTimes] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -35,13 +35,13 @@ export default function InvestmentLong(): ReactElement {
 
   return (
     <div style={{ padding: 24 }}>
-      <h2>Investment Long（被缓存，检查滚动位置保持）</h2>
+      <h2>demo Long（被缓存，检查滚动位置保持）</h2>
       <p style={{ color: "#666" }}>在页面内滚动，然后切换到其他缓存页面再回来，滚动位置应保持不变。</p>
       <div style={{ display: "flex", gap: 12 }}>
-        <Link to="/investment/a">A</Link>
-        <Link to="/investment/b">B</Link>
-        <Link to="/investment/c">C</Link>
-        <Link to="/investment/d">D</Link>
+        <Link to="/demo/a">A</Link>
+        <Link to="/demo/b">B</Link>
+        <Link to="/demo/c">C</Link>
+        <Link to="/demo/d">D</Link>
         <Link to="/">首页</Link>
       </div>
       <div

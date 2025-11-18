@@ -1,5 +1,5 @@
 {
-  "name": "react-keep-alive",
+  "name": "react-keepalive",
   "type": "module",
   "version": "0.0.0",
   "description": "A keep-alive component for React",
@@ -8,20 +8,20 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
     },
     "./package.json": "./package.json"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/index.mjs",
+  "types": "dist/index.d.mts",
   "files": [
     "LICENSE",
     "README.md",
     "dist"
   ],
   "scripts": {
-    "build": "tsc -b",
+    "build": "tsdown",
     "lint": "eslint .",
     "prepare": "husky",
     "prepublishOnly": "pnpm run build"
@@ -29,8 +29,6 @@
   "peerDependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
-  },
-  "dependencies": {
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.2.0",
@@ -51,6 +49,7 @@
     "lint-staged": "^15.2.10",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "tsdown": "^0.16.5",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.3"
   },

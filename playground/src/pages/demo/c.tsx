@@ -1,10 +1,10 @@
 //
 import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
-import { useAliveLifecycle } from "react-keep-alive";
+import { useAliveLifecycle } from "react-keepalive";
 import { Link } from "react-router-dom";
 
-export default function InvestmentD(): ReactElement {
+export default function DemoC(): ReactElement {
   const [count, setCount] = useState(0);
   const [text, setText] = useState("");
   const [activatedTimes, setActivatedTimes] = useState(0);
@@ -16,12 +16,12 @@ export default function InvestmentD(): ReactElement {
     onActivated: () => {
       setActivatedTimes((n) => n + 1);
       setTimerRunning(true);
-      console.warn("[D] onActivated");
+      console.warn("[C] onActivated");
     },
     onDeactivated: () => {
       setDeactivatedTimes((n) => n + 1);
       setTimerRunning(false);
-      console.warn("[D] onDeactivated");
+      console.warn("[C] onDeactivated");
     },
   });
 
@@ -34,7 +34,7 @@ export default function InvestmentD(): ReactElement {
 
   return (
     <div style={{ padding: 24 }}>
-      <h2>Investment D（被缓存）</h2>
+      <h2>demo C（被缓存）</h2>
       <div style={{ display: "flex", gap: 16, margin: "12px 0" }}>
         <button type="button" onClick={() => setCount((c) => c + 1)}>count + 1</button>
         <span>
@@ -67,9 +67,9 @@ export default function InvestmentD(): ReactElement {
       </div>
 
       <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
-        <Link to="/investment/a">A</Link>
-        <Link to="/investment/b">B</Link>
-        <Link to="/investment/c">C</Link>
+        <Link to="/demo/a">A</Link>
+        <Link to="/demo/b">B</Link>
+        <Link to="/demo/d">D</Link>
         <Link to="/">首页</Link>
       </div>
     </div>

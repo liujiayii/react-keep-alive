@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { KeepAlive, useAliveController } from "react-keep-alive";
+import { KeepAlive, useAliveController } from "react-keepalive";
 import { createBrowserRouter, Link, RouterProvider, useLocation, useOutlet } from "react-router-dom";
 import routes from "./routes";
 
@@ -9,12 +9,12 @@ function Layouts(): ReactElement {
   const outlet = useOutlet();
 
   // 顶部控制：缓存策略与 LRU 容量
-  const [mode, setMode] = useState<"investment" | "all" | "disabled">("investment");
+  const [mode, setMode] = useState<"demo" | "all" | "disabled">("demo");
   const [max, setMax] = useState<number>(3);
 
   const includeRules = useMemo(() => {
-    if (mode === "investment")
-      return [/^\/investment/];
+    if (mode === "demo")
+      return [/^\/demo/];
     if (mode === "all")
       return undefined; // 不传 include 表示允许全部缓存
     return [];
@@ -27,7 +27,7 @@ function Layouts(): ReactElement {
   }, [mode]);
 
   const { drop, dropScope, refresh, refreshScope, clear, getCachingNodes } = useAliveController();
-  const [nameInput, setNameInput] = useState<string>("/investment/a");
+  const [nameInput, setNameInput] = useState<string>("/demo/a");
   const [useRegex, setUseRegex] = useState<boolean>(false);
   const target = useMemo(() => (useRegex ? new RegExp(nameInput) : nameInput), [useRegex, nameInput]);
   const handledQuery = useRef<string>("");
@@ -79,20 +79,21 @@ function Layouts(): ReactElement {
         <strong>KeepAlive 控制台：</strong>
         <div style={{ display: "flex", gap: 8 }}>
           <Link to="/">首页</Link>
-          <Link to="/investment/a">A</Link>
-          <Link to="/investment/b">B</Link>
-          <Link to="/investment/c">C</Link>
-          <Link to="/investment/d">D</Link>
-          <Link to="/investment/long">Long</Link>
+          <Link to="/demo/a">A</Link>
+          <Link to="/demo/b">B</Link>
+          <Link to="/demo/c">C</Link>
+          <Link to="/demo/d">D</Link>
+          <Link to="/demo/long">Long</Link>
           <Link to="/nocache">NoCache</Link>
           <Link to="/components">Components</Link>
+          <Link to="/docs">Docs</Link>
         </div>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
           <span>模式：</span>
           <label>
-            <input type="radio" name="mode" checked={mode === "investment"} onChange={() => setMode("investment")} />
+            <input type="radio" name="mode" checked={mode === "demo"} onChange={() => setMode("demo")} />
             {" "}
-            仅缓存 /investment
+            仅缓存 /demo
           </label>
           <label>
             <input type="radio" name="mode" checked={mode === "all"} onChange={() => setMode("all")} />

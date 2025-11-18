@@ -1,10 +1,10 @@
-# react-keep-alive
+# react-keepalive
 
 一个基于 React 19.2 的 Activity 实现的 KeepAlive 组件，为 React 路由应用带来与 Vue KeepAlive 类似的 include/exclude/max 语义与行为。
 
 ## 仓库结构
 
-- `src/` 库源码（react-keep-alive）
+- `src/` 库源码（react-keepalive）
 - `playground/` 演示应用：展示缓存、生命周期、LRU 等效果
 
 ## 安装
@@ -12,7 +12,7 @@
 要求 React 版本为 19.2 及以上（以支持 Activity）。
 
 ```bash
-pnpm add react-keep-alive
+pnpm add react-keepalive
 ```
 
 ## 快速上手
@@ -20,13 +20,13 @@ pnpm add react-keep-alive
 用 `KeepAlive` 包裹你的路由出口，并传入当前路径作为 `activeKey`。
 
 ```tsx
-import { KeepAlive } from "react-keep-alive";
+import { KeepAlive } from "react-keepalive";
 import { createBrowserRouter, Outlet, RouterProvider, useLocation } from "react-router-dom";
 
 function Layout() {
   const { pathname } = useLocation();
   return (
-    <KeepAlive activeKey={pathname} include={[/^\/investment/]} max={3}>
+    <KeepAlive activeKey={pathname} include={[/^\/demo/]} max={3}>
       <Outlet />
     </KeepAlive>
   );
@@ -35,8 +35,8 @@ function Layout() {
 const router = createBrowserRouter([
   { path: "/", element: <Layout />, children: [
     { path: "", element: <Home /> },
-    { path: "investment/a", element: <InvestmentA /> },
-    { path: "investment/b", element: <InvestmentB /> },
+    { path: "demo/a", element: <demoA /> },
+    { path: "demo/b", element: <demoB /> },
     { path: "nocache", element: <NoCache /> },
   ] }
 ]);
@@ -68,7 +68,7 @@ Tips：
 提供 `onActivated/onDeactivated` 生命周期回调（仅在被 KeepAlive 包裹的组件中触发）。
 
 ```tsx
-import { useAliveLifecycle } from "react-keep-alive";
+import { useAliveLifecycle } from "react-keepalive";
 
 export default function Page() {
   useAliveLifecycle({
@@ -91,17 +91,17 @@ export default function Page() {
 - `getCachingNodes()`：获取当前所有缓存节点的名称列表。
 
 ```tsx
-import { useAliveController } from "react-keep-alive";
+import { useAliveController } from "react-keepalive";
 
 export default function Panel() {
   const { drop, dropScope, refresh, refreshScope, clear, getCachingNodes } = useAliveController();
-  const target = "/investment/a";
+  const target = "/demo/a";
   return (
     <div>
       <button type="button" onClick={() => drop(target)}>drop</button>
-      <button type="button" onClick={() => dropScope(/^\/investment/)}>dropScope</button>
+      <button type="button" onClick={() => dropScope(/^\/demo/)}>dropScope</button>
       <button type="button" onClick={() => refresh(target)}>refresh</button>
-      <button type="button" onClick={() => refreshScope(/^\/investment/)}>refreshScope</button>
+      <button type="button" onClick={() => refreshScope(/^\/demo/)}>refreshScope</button>
       <button type="button" onClick={() => clear()}>clear</button>
       <pre>{JSON.stringify(getCachingNodes(), null, 2)}</pre>
     </div>
@@ -113,8 +113,8 @@ export default function Panel() {
 
 已经内置演示工程：
 
-- 顶部控制条：切换缓存模式（仅 /investment / 全部 / 禁用）与 LRU 容量
-- 页面示例：`/investment/a/b/c/d`（计数器+输入框维持）、`/investment/long`（滚动位置维持）、`/nocache`（对照）
+- 顶部控制条：切换缓存模式（仅 /demo / 全部 / 禁用）与 LRU 容量
+- 页面示例：`/demo/a/b/c/d`（计数器+输入框维持）、`/demo/long`（滚动位置维持）、`/nocache`（对照）
 
 启动：
 

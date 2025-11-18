@@ -1,0 +1,50 @@
+# action名称
+name: Push Release
+
+# 当代码合并到master分支的时候，执行下列脚本
+on:
+  push:
+    tags:
+      - "v*"
+
+# 任务
+jobs:
+  # publish-npm任务
+  publish-npm:
+    # 在ubuntu最新版本的虚拟机执行
+    runs-on: ubuntu-latest
+    steps:
+      # 检查并切换到master分支
+      - name: 检查master分支
+        # 使用actions/checkout插件
+        uses: actions/checkout@v5
+      - name: Install Pnpm
+        uses: pnpm/action-setup@v4
+      # 安装node
+      - name: 设置Node.js
+        # 使用actions/setup-node插件
+        uses: actions/setup-node@v6
+        with:
+          # node版本
+          node-version: 22.21.0
+          registry-url: https://registry.npmjs.org/
+          cache: pnpm
+
+      - name: Run npm scripts
+        run: |
+          node -v
+          pnpm -v
+          pnpm install
+      - name: Run test
+        run: |
+          pnpm run test
+      - name: Run build
+        run: |
+          pnpm run build
+      # 发布NPM包
+      - name: 发布NPM包
+        # 执行发布代码
+        run: |
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
