@@ -138,7 +138,7 @@ function Layouts(): ReactElement {
 }
 const router = createBrowserRouter([
   { path: "/", element: <Layouts />, children: routes },
-]);
+], { basename: "/react-keep-alive" });
 
 function App(): ReactElement {
   return (

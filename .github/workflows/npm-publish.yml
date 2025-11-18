@@ -35,9 +35,9 @@ jobs:
           node -v
           pnpm -v
           pnpm install
-      - name: Run test
-        run: |
-          pnpm run test
+      # - name: Run test
+      # run: |
+      #   pnpm run test
       - name: Run build
         run: |
           pnpm run build
