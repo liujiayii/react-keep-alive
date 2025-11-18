@@ -8,11 +8,13 @@ import readmeRaw from "../../../README.md?raw";
 export default function Docs(): ReactElement {
   const html = useMemo(() => marked.parse(readmeRaw) as string, []);
   return (
-    <div style={{ padding: 24, maxWidth: 900, margin: "0 auto" }}>
-      <div style={{ marginBottom: 16 }}>
-        <Link to="/">返回 Demo 首页</Link>
+    <div className="page">
+      <div className="container" style={{ maxWidth: 900 }}>
+        <div className="row" style={{ marginBottom: 16 }}>
+          <Link to="/"><button>返回首页</button></Link>
+        </div>
+        <div className="card" dangerouslySetInnerHTML={{ __html: html }} />
       </div>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );
 }

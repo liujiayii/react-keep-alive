@@ -33,9 +33,9 @@ export default function DemoB(): ReactElement {
   }, [timerRunning]);
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className="p-6">
       <h2>demo B（被缓存）</h2>
-      <div style={{ display: "flex", gap: 16, margin: "12px 0" }}>
+      <div className="my-3 flex gap-4">
         <button type="button" onClick={() => setCount((c) => c + 1)}>count + 1</button>
         <span>
           count:
@@ -47,15 +47,15 @@ export default function DemoB(): ReactElement {
           s（激活时计时）
         </span>
       </div>
-      <div style={{ margin: "12px 0" }}>
+      <div className="my-3">
         <input
           placeholder="输入点什么（切页后保持）"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          style={{ padding: 8, width: 280 }}
+          className="w-72 p-2"
         />
       </div>
-      <div style={{ color: "#666" }}>
+      <div className="text-slate-500">
         <p>
           onActivated 次数：
           {activatedTimes}
@@ -66,7 +66,7 @@ export default function DemoB(): ReactElement {
         </p>
       </div>
 
-      <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
+      <div className="mt-4 flex gap-3">
         <Link to="/demo/a">去 demo A</Link>
         <Link to="/">返回首页</Link>
         <Link to="/nocache">去非缓存页面 /nocache</Link>

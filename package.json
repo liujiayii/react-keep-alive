@@ -1,10 +1,14 @@
 {
   "name": "react-keepalive",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A keep-alive component for React",
   "authors": "liujiayii",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liujiayii/react-keep-alive.git"
+  },
   "sideEffects": false,
   "exports": {
     ".": {

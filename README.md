@@ -1,5 +1,7 @@
 # react-keepalive
 
+> 温馨提示：除此行提示之外，本项目的代码99%由 Trae 开发，如您在使用过程中遇到任何问题，欢迎提交 Issue 或 Pull Request。
+
 一个基于 React 19.2 的 Activity 实现的 KeepAlive 组件，为 React 路由应用带来与 Vue KeepAlive 类似的 include/exclude/max 语义与行为。
 
 ## 仓库结构

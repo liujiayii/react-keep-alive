@@ -3,49 +3,44 @@ import { Link } from "react-router-dom";
 
 export default function Home(): ReactElement {
   return (
-    <div style={{ padding: 24 }}>
-      <h1>React KeepAlive 演示首页</h1>
-      <p>
-        这个 playground 使用 KeepAlive 包裹路由内容，并通过
-        <code style={{ margin: "0 4px" }}>include: [/^/demo/]</code>
-        仅缓存
-        <code style={{ margin: "0 4px" }}>/demo</code>
-        下的页面。切换页面时你可以观察到状态是否被保留。
-      </p>
+    <div className="page">
+      <div className="hero">
+        <h1>React KeepAlive Playground</h1>
+        <p>在路由与组件层面演示缓存、刷新与作用域；观察状态的保留与重置。</p>
+        <div className="row" style={{ justifyContent: "center" }}>
+          <Link to="/docs"><button>文档</button></Link>
+          <Link to="/components"><button>组件演示</button></Link>
+          <Link to="/nocache"><button>非缓存页面</button></Link>
+        </div>
+      </div>
 
-      <h2>演示入口</h2>
-      <ul style={{ lineHeight: 2 }}>
-        <li>
-          <Link to="/demo/a">/demo/a - 缓存页面 A</Link>
-        </li>
-        <li>
-          <Link to="/demo/b">/demo/b - 缓存页面 B</Link>
-        </li>
-        <li>
-          <Link to="/demo/c">/demo/c - 缓存页面 C</Link>
-        </li>
-        <li>
-          <Link to="/demo/d">/demo/d - 缓存页面 D</Link>
-        </li>
-        <li>
-          <Link to="/demo/long">/demo/long - 大列表与滚动保持</Link>
-        </li>
-        <li>
-          <Link to="/nocache">/nocache - 非缓存页面</Link>
-        </li>
-        <li>
-          <Link to="/components">/components - 组件缓存演示（页内 Tab 切换）</Link>
-        </li>
-      </ul>
-
-      <p style={{ color: "#666" }}>
-        提示：在 A 与 B 之间来回切换，输入框与计数器状态会保留下来；切去非缓存页面再回来，A/B 状态仍在。
-        进入 /nocache 后离开再返回，状态会重置。
-      </p>
-      <p style={{ color: "#666" }}>
-        你也可以使用顶部的控制栏调整缓存策略（仅缓存 /demo / 缓存全部 / 禁用缓存）以及 LRU 的最大缓存数量 max，
-        访问 A/B/C/D 超过 max 时，将看到最早访问的页面被淘汰，再返回时状态会重置。
-      </p>
+      <div className="grid">
+        <div className="card">
+          <h3>Demo A</h3>
+          <p>基础计数与输入缓存。</p>
+          <Link to="/demo/a"><button>进入</button></Link>
+        </div>
+        <div className="card">
+          <h3>Demo B</h3>
+          <p>与 A 切换观察状态保持。</p>
+          <Link to="/demo/b"><button>进入</button></Link>
+        </div>
+        <div className="card">
+          <h3>Demo C</h3>
+          <p>更多交互与生命周期。</p>
+          <Link to="/demo/c"><button>进入</button></Link>
+        </div>
+        <div className="card">
+          <h3>Demo D</h3>
+          <p>组合场景与切页体验。</p>
+          <Link to="/demo/d"><button>进入</button></Link>
+        </div>
+        <div className="card">
+          <h3>Demo Long</h3>
+          <p>大列表与滚动位置保持。</p>
+          <Link to="/demo/long"><button>进入</button></Link>
+        </div>
+      </div>
     </div>
   );
 }

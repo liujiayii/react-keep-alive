@@ -34,10 +34,10 @@ export default function DemoLong(): ReactElement {
   }, []);
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className="p-6">
       <h2>demo Long（被缓存，检查滚动位置保持）</h2>
-      <p style={{ color: "#666" }}>在页面内滚动，然后切换到其他缓存页面再回来，滚动位置应保持不变。</p>
-      <div style={{ display: "flex", gap: 12 }}>
+      <p className="text-slate-500">在页面内滚动，然后切换到其他缓存页面再回来，滚动位置应保持不变。</p>
+      <div className="flex gap-3">
         <Link to="/demo/a">A</Link>
         <Link to="/demo/b">B</Link>
         <Link to="/demo/c">C</Link>
@@ -46,28 +46,21 @@ export default function DemoLong(): ReactElement {
       </div>
       <div
         ref={containerRef}
-        style={{
-          marginTop: 12,
-          height: 320,
-          overflow: "auto",
-          border: "1px solid #eee",
-          borderRadius: 8,
-          background: "#fff",
-        }}
+        className="mt-3 h-80 overflow-auto border border-[#eee] rounded-lg bg-white"
       >
         {items.map((item, i) => (
-          <div key={item.id} style={{ padding: 12, borderBottom: "1px solid #f0f0f0" }}>
+          <div key={item.id} className="border-b border-[#f0f0f0] p-3">
             <strong>
               Item
               {i + 1}
             </strong>
-            <div style={{ marginTop: 8 }}>
-              <input placeholder={`给 Item ${i + 1} 留点字（保持状态）`} style={{ padding: 6, width: 280 }} />
+            <div className="mt-2">
+              <input placeholder={`给 Item ${i + 1} 留点字（保持状态）`} className="w-72 p-2" />
             </div>
           </div>
         ))}
       </div>
-      <div style={{ color: "#666", marginTop: 12 }}>
+      <div className="mt-3 text-slate-500">
         <p>
           onActivated 次数：
           {activatedTimes}

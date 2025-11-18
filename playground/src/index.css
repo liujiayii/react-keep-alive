@@ -1,42 +1,244 @@
-/* 简单的全局样式，确保页面元素有基本可读性 */
 :root {
+  --bg:
+    radial-gradient(1200px 600px at 80% -10%, #e8f1ff 0%, transparent 60%),
+    linear-gradient(180deg, #fbfcff 0%, #f3f6fb 100%);
+  --text: #0f172a;
+  --muted: #64748b;
+  --brand: #4f46e5;
+  --brand-2: #22d3ee;
+  --border: rgba(15, 23, 42, 0.08);
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --glass: rgba(255, 255, 255, 0.65);
   font-family:
+    ui-sans-serif,
     system-ui,
     -apple-system,
     Segoe UI,
     Roboto,
     Helvetica,
-    Arial,
-    "Apple Color Emoji",
-    "Segoe UI Emoji";
+    Arial;
   color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: #f8f8fb;
+  background: var(--bg);
+  color: var(--text);
 }
 
 a {
-  color: #1677ff;
+  color: var(--brand);
   text-decoration: none;
 }
 
 code {
-  background: #efefef;
+  background: #eef2ff;
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 button {
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: 1px solid #d0d0d0;
-  background: #fff;
+  appearance: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--text);
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
 }
 
-input {
-  border: 1px solid #d0d0d0;
-  border-radius: 6px;
+input,
+select {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: white;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: var(--glass);
+  border-bottom: 1px solid var(--border);
+}
+.topbar-inner {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+}
+.brand {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.nav a {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: white;
+}
+
+.panel {
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card-bg);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+}
+.panel-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+.badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  border: 1px solid var(--border);
+}
+
+.page {
+  padding: 24px;
+}
+.hero {
+  padding: 48px 24px;
+  text-align: center;
+}
+.hero h1 {
+  font-size: 40px;
+  margin: 0;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.hero p {
+  color: var(--muted);
+  margin: 10px 0 24px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.card {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card-bg);
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
+}
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.flex {
+  display: flex;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-3 {
+  margin-top: 0.75rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+.ml-3 {
+  margin-left: 0.75rem;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.p-3 {
+  padding: 0.75rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.p-6 {
+  padding: 1.5rem;
+}
+.w-72 {
+  width: 18rem;
+}
+.border {
+  border: 1px solid var(--border);
+}
+.border-\[\#eee\] {
+  border-color: #eee;
+}
+.border-\[\#f0f0f0\] {
+  border-color: #f0f0f0;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.bg-white {
+  background: white;
+}
+.text-slate-500 {
+  color: #64748b;
+}
+.h-80 {
+  height: 20rem;
+}
+.overflow-auto {
+  overflow: auto;
 }
