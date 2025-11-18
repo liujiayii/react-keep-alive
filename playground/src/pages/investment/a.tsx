@@ -24,6 +24,10 @@ export default function InvestmentA(): ReactElement {
       console.warn("[A] onDeactivated");
     },
   });
+  useEffect(() => {
+    console.warn("[A] mounted");
+    return () => console.warn("[A] unmounted");
+  }, []);
 
   useEffect(() => {
     if (!timerRunning)

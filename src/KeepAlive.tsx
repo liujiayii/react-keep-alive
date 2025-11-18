@@ -49,9 +49,10 @@ export default function KeepAlive(props: KeepAliveProps): ReactElement {
   // LRU 队列（最旧在前，最新在后）
   const orderRef = useRef<string[]>([]);
   const scopesRef = useRef<Map<string, string[]>>(new Map());
+  const versionsRef = useRef<Map<string, number>>(new Map());
   const [, setRev] = useState(0);
   const parentScope = use(AliveScopeContext);
-  useRegisterInstance(cacheRef, orderRef, scopesRef, setRev);
+  useRegisterInstance(cacheRef, orderRef, scopesRef, versionsRef, setRev);
 
   const shouldExclude = useMemo(() => matchRules(activeKey, exclude), [activeKey, exclude]);
   const shouldInclude = useMemo(() => matchRules(activeKey, include), [activeKey, include]);
@@ -145,7 +146,7 @@ export default function KeepAlive(props: KeepAliveProps): ReactElement {
       // 这样可以避免你看到的首次离开时出现 unmount 然后再 mount 的现象。
       const node = element;
       list.push(
-        <ActivityAny key={key} active={isActive}>
+        <ActivityAny key={`${key}:${versionsRef.current.get(key) ?? 0}`} active={isActive}>
           <div style={{ display: isActive ? undefined : "none" }}>
             <AliveScopeProvider name={key}>
               <AliveItemProvider active={isActive}>
@@ -160,7 +161,7 @@ export default function KeepAlive(props: KeepAliveProps): ReactElement {
     // 当不允许缓存时，仍需要渲染当前活跃项（作为临时子节点，不进入缓存）
     if (!allowCache || entries.length === 0) {
       list.push(
-        <ActivityAny key={activeKey} active>
+        <ActivityAny key={`${activeKey}:${versionsRef.current.get(activeKey) ?? 0}`} active>
           <AliveScopeProvider name={activeKey}>
             <AliveItemProvider active>
               {children}
@@ -180,6 +181,7 @@ function makeInstance(
   cacheRef: React.MutableRefObject<Map<string, ReactNode>>,
   orderRef: React.MutableRefObject<string[]>,
   scopesRef: React.MutableRefObject<Map<string, string[]>>,
+  versionsRef: React.MutableRefObject<Map<string, number>>,
   bump: () => void,
 ): import("./context").KeepAliveInstance {
   return {
@@ -189,10 +191,12 @@ function makeInstance(
       const cache = cacheRef.current;
       const order = orderRef.current;
       const scopes = scopesRef.current;
+      const versions = versionsRef.current;
       const keys = Array.from(cache.keys());
       for (const k of keys) {
         const hit = typeof name === "string" ? k === name : name.test(k);
         if (hit) {
+          versions.set(k, (versions.get(k) ?? 0) + 1);
           cache.delete(k);
           scopes.delete(k);
           const idx = order.indexOf(k);
@@ -206,10 +210,12 @@ function makeInstance(
       const cache = cacheRef.current;
       const order = orderRef.current;
       const scopes = scopesRef.current;
+      const versions = versionsRef.current;
       const keys = Array.from(cache.keys());
       for (const k of keys) {
         const hit = typeof name === "string" ? k === name : name.test(k);
         if (hit) {
+          versions.set(k, (versions.get(k) ?? 0) + 1);
           cache.delete(k);
           scopes.delete(k);
           const idx = order.indexOf(k);
@@ -223,14 +229,15 @@ function makeInstance(
       cacheRef.current.clear();
       orderRef.current.length = 0;
       scopesRef.current.clear();
+      versionsRef.current.clear();
       bump();
     },
   };
 }
 
-function useRegisterInstance(cacheRef: React.MutableRefObject<Map<string, ReactNode>>, orderRef: React.MutableRefObject<string[]>, scopesRef: React.MutableRefObject<Map<string, string[]>>, setRev: React.Dispatch<React.SetStateAction<number>>): void {
+function useRegisterInstance(cacheRef: React.MutableRefObject<Map<string, ReactNode>>, orderRef: React.MutableRefObject<string[]>, scopesRef: React.MutableRefObject<Map<string, string[]>>, versionsRef: React.MutableRefObject<Map<string, number>>, setRev: React.Dispatch<React.SetStateAction<number>>): void {
   useLayoutEffect(() => {
-    const inst = makeInstance(cacheRef, orderRef, scopesRef, () => setRev((x) => x + 1));
+    const inst = makeInstance(cacheRef, orderRef, scopesRef, versionsRef, () => setRev((x) => x + 1));
     registerKeepAliveInstance(inst);
     return () => unregisterKeepAliveInstance(inst);
   }, []);
